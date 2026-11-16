@@ -38,8 +38,6 @@ interface RecordatorioApiService {
     ): Response<Unit>
 }
 
-// Proveedor Singleton de Retrofit + OkHttp
-// Proveedor Singleton de Retrofit + OkHttp
 object RetrofitClient {
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
@@ -48,9 +46,9 @@ object RetrofitClient {
 
     private val okHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
-        .connectTimeout(10, TimeUnit.SECONDS) // Control de timeout de conexión
-        .readTimeout(10, TimeUnit.SECONDS)    // Control de timeout de lectura
-        .writeTimeout(10, TimeUnit.SECONDS)   // Control de timeout de escritura
+        .connectTimeout(10, TimeUnit.SECONDS) 
+        .readTimeout(10, TimeUnit.SECONDS)   
+        .writeTimeout(10, TimeUnit.SECONDS)   
         .build()
 
     @Volatile
@@ -58,7 +56,7 @@ object RetrofitClient {
 
     fun getApiService(context: android.content.Context): RecordatorioApiService {
         return apiServiceInstance ?: synchronized(this) {
-            val baseUrl = context.getString(R.string.base_url) // Leída de la configuración de Gradle (Consigna 4)
+            val baseUrl = context.getString(R.string.base_url) 
             val instance = Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .client(okHttpClient)
