@@ -16,7 +16,6 @@ class ListadoViewModel(
     private val preferenciasRepo: PreferenciasRepository
 ) : ViewModel() {
 
-    // Preferencias reactivas desde DataStore
     val preferencias: StateFlow<PreferenciasApp> = preferenciasRepo.preferenciasFlow
         .stateIn(
             scope = viewModelScope,
@@ -24,26 +23,22 @@ class ListadoViewModel(
             initialValue = PreferenciasApp()
         )
 
-    // Mensaje informativo de sincronización / errores controlados de red
     private val _mensajeSync = MutableStateFlow<String?>(null)
     val mensajeSync: StateFlow<String?> = _mensajeSync.asStateFlow()
 
     private val _sincronizando = MutableStateFlow(false)
     val sincronizando: StateFlow<Boolean> = _sincronizando.asStateFlow()
 
-    // Combinamos el Flow de Room con el Flow de DataStore
     val uiState: StateFlow<ListadoUiState> = combine(
         repository.recordatoriosFlow,
         preferenciasRepo.preferenciasFlow
     ) { lista, prefs ->
-        // 1. Aplicar preferencia de visibilidad de completados
         val filtrados = if (prefs.mostrarCompletados) {
             lista
         } else {
             lista.filter { it.estado !is EstadoRecordatorio.Completado }
         }
 
-        // 2. Aplicar preferencia de ordenamiento
         val ordenados = when (prefs.ordenamiento) {
             CriterioOrden.FECHA -> filtrados.sortedByDescending { it.fechaCreacion }
             CriterioOrden.PRIORIDAD -> filtrados.sortedByDescending { it.prioridad.ordinal }
@@ -64,7 +59,6 @@ class ListadoViewModel(
         )
 
     init {
-        // Sincronización inicial al abrir la app (sube pendientes y descarga remotos sin duplicar)
         sincronizar(descargarRemotos = true)
     }
 
@@ -84,7 +78,6 @@ class ListadoViewModel(
         _mensajeSync.value = null
     }
 
-    // Acciones sobre preferencias (DataStore)
     fun cambiarTemaOscuro(habilitado: Boolean) {
         viewModelScope.launch { preferenciasRepo.actualizarTemaOscuro(habilitado) }
     }
