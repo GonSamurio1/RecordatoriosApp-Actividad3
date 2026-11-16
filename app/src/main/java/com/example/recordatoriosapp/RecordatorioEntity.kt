@@ -3,7 +3,6 @@ package com.example.recordatoriosapp
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// Estado de sincronización de cada registro local (Consigna 3)
 enum class EstadoSync {
     SINCRONIZADO,
     PENDIENTE_CREACION,
@@ -16,12 +15,12 @@ enum class EstadoSync {
 data class RecordatorioEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val remoteId: Int? = null, // ID asignado por el servidor remoto cuando se sincroniza
+    val remoteId: Int? = null, 
     val titulo: String,
     val descripcion: String?,
     val categoria: String,
-    val prioridad: String, // Guardamos el .name de Prioridad (ALTA, MEDIA, BAJA)
-    val estado: String,    // Guardamos el .name de EstadoRecordatorio
+    val prioridad: String, 
+    val estado: String,    
     val fechaCreacion: Long = System.currentTimeMillis(),
     val estadoSync: String = EstadoSync.PENDIENTE_CREACION.name
 )
