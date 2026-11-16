@@ -1,6 +1,5 @@
 package com.example.recordatoriosapp
 
-// 1. De Entity (Room) -> Modelo de Dominio (UI)
 fun RecordatorioEntity.toDomain(): Recordatorio {
     val estadoDominio = when (this.estado) {
         "Completado" -> EstadoRecordatorio.Completado
@@ -32,7 +31,6 @@ fun RecordatorioEntity.toDomain(): Recordatorio {
     )
 }
 
-// 2. De Modelo de Dominio (UI) -> Entity (Room)
 fun Recordatorio.toEntity(
     remoteId: Int? = null,
     estadoSync: EstadoSync = this.estadoSync
@@ -56,7 +54,6 @@ fun Recordatorio.toEntity(
     )
 }
 
-// 3. De DTO (Retrofit) -> Entity (Room)
 fun RecordatorioDto.toEntity(localId: Int = 0): RecordatorioEntity {
     return RecordatorioEntity(
         id = localId,
@@ -71,7 +68,6 @@ fun RecordatorioDto.toEntity(localId: Int = 0): RecordatorioEntity {
     )
 }
 
-// 4. De Entity (Room) -> DTO (Retrofit)
 fun RecordatorioEntity.toDto(): RecordatorioDto {
     return RecordatorioDto(
         id = this.remoteId,
