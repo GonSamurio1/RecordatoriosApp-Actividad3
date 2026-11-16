@@ -2,7 +2,6 @@ package com.example.recordatoriosapp
 
 import com.google.gson.annotations.SerializedName
 
-// DTO (Data Transfer Object) que representa exclusivamente el contrato JSON del servicio remoto
 data class RecordatorioDto(
     @SerializedName("id")
     val id: Int? = null,
